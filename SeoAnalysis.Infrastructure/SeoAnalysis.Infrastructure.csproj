@@ -4,7 +4,6 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <Authors>Corey Tattam</Authors>
     <Product>SEO Analysis</Product>
-    <Company />
   </PropertyGroup>
 
 </Project>
