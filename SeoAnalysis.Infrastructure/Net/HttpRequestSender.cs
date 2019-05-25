@@ -25,6 +25,13 @@ namespace SeoAnalysis.Infrastructure.Net
 
         #region " - - - - - - IHttpRequestSender Implementation - - - - - - "
 
+        /// <summary>
+        /// Make a GET Request against a specified URI and return any content as a string.
+        /// </summary>
+        /// <returns>The response content as a string.</returns>
+        /// <exception cref="HttpRequestException">
+        /// Will throw an exception if the reponse is not successful.
+        /// </exception>
         public async Task<string> GetStringContentAsync(Uri requestUri)
         {
             using (var _RequestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri))
@@ -35,7 +42,7 @@ namespace SeoAnalysis.Infrastructure.Net
                 return await _ResponseMessage.Content.ReadAsStringAsync();
             } //_RequestMessage, _ResponseMessage
 
-        } //Search
+        } //GetStringContentAsync
 
         #endregion //IHttpRequestSender Implementation
 

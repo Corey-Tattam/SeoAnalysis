@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace SeoAnalysis.Infrastructure.Tests.Unit.Net
+namespace SeoAnalysis.Infrastructure.Tests.Integration.Net
 {
     public class HttpRequestSenderTests
     {
