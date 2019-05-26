@@ -28,7 +28,7 @@ namespace SeoAnalysis.Infrastructure.Services
         #region " - - - - - - ISeoAnalysisReportService Implementation - - - - - - "
 
         /// <summary>
-        /// Given a keywords string and URL, retrieve an S.E.O. Report. 
+        /// Given a keywords string and URL, retrieve an S.E.O. Report.
         /// </summary>
         /// <param name="keywords">The keywords to search.</param>
         /// <param name="url">The URL to match.</param>
@@ -82,7 +82,7 @@ namespace SeoAnalysis.Infrastructure.Services
         private static void ValidateUrl(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
-                throw new ValidationException("At URL must be specified.");
+                throw new ValidationException("A URL must be specified.");
         } //ValidateUrl
 
         #endregion //Methods
