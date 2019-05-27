@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Nav, Navbar } from 'react-bootstrap';
+import { GoHome } from 'react-icons/go';
+import { FaSearch } from 'react-icons/fa';
+import { LinkContainer } from 'react-router-bootstrap';
 import './NavMenu.css';
 
 export class NavMenu extends Component {
@@ -23,27 +25,23 @@ export class NavMenu extends Component {
 
   render () {
     return (
-      <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
-          <Container>
-            <NavbarBrand tag={Link} to="/">SeoAnalysis.WebUI</NavbarBrand>
-            <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-            <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-              <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                </NavItem>
-              </ul>
-            </Collapse>
-          </Container>
+        <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect fixed="top">
+            <Navbar.Brand href="/">
+                <strong><FaSearch size="1.5em" style={{ paddingBottom: "5px" }} /></strong> Search Engine Analysis Tool
+                </Navbar.Brand>
+            <Navbar.Toggle />
+            <Navbar.Collapse className="justify-content-end">
+                <Nav>
+                    <Nav.Link>
+                        <LinkContainer to={'/'} exact>
+                            <Nav.Item>
+                                <GoHome size="1.5em" style={{ paddingBottom: "5px" }} /> Home
+                                </Nav.Item>
+                        </LinkContainer>
+                    </Nav.Link>
+                </Nav>
+            </Navbar.Collapse>
         </Navbar>
-      </header>
     );
   }
 }

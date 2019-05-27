@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { NavMenu } from './NavMenu';
 
 export class Layout extends Component {
@@ -7,12 +7,16 @@ export class Layout extends Component {
 
   render () {
     return (
-      <div>
-        <NavMenu />
         <Container>
-          {this.props.children}
+            <Row style={{ marginBottom: "4em" }}>
+                <NavMenu />
+            </Row>
+            <Row>
+                <Col>
+                    {this.props.children}
+                </Col>
+            </Row>
         </Container>
-      </div>
     );
   }
 }
