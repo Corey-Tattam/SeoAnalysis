@@ -103,7 +103,7 @@ namespace SeoAnalysis.Infrastructure.Tests.Unit.SearchEngines
 
             public static GoogleResultsPageParser Create()
             {
-                var _Logger = NullLogger.Instance;
+                var _Logger = new NullLogger<GoogleResultsPageParser>();
                 return new GoogleResultsPageParser(_Logger);
             } //Create
 

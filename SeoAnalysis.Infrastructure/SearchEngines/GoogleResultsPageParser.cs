@@ -24,7 +24,7 @@ namespace SeoAnalysis.Infrastructure.SearchEngines
 
         #region " - - - - - - Constructors - - - - - - "
 
-        public GoogleResultsPageParser(ILogger logger)
+        public GoogleResultsPageParser(ILogger<GoogleResultsPageParser> logger)
         {
             this.m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
