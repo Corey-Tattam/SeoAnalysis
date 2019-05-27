@@ -19,11 +19,7 @@ namespace SeoAnalysis.Infrastructure.Tests.Unit.SearchEngines
         public async Task GetSearchEngineResultsPagePositions_KeywordsArgumentOverWordLimit_ThrowsValidationException()
         {
             // Arrange
-            var _HttpRequestSender      = new TestHttpRequestSender("Some Content");
-            var _SearchResultsParser    = new TestGoogleResultsPageParser(Enumerable.Empty<SearchEngineResult>());
-            var _SearchUrlProvider      = new TestGoogleSearchUrlProvider(new Uri("https://www.google.com"));
-            var _Analyser               = new GoogleResultsPageAnalyser(_HttpRequestSender, _SearchResultsParser, _SearchUrlProvider);
-
+            var _Analyser = GoogleResultsPageAnalyserFactory.Create();
             var _Keywords = string.Join(' ', Enumerable.Range(0, GoogleResultsPageAnalyser.GOOGLE_SEARCH_KEYWORDS_LIMIT + 1));
 
             // Act
@@ -38,10 +34,7 @@ namespace SeoAnalysis.Infrastructure.Tests.Unit.SearchEngines
         public async Task GetSearchEngineResultsPagePositions_KeywordsArgumentOverCharacterLimit_ThrowsValidationException()
         {
             // Arrange
-            var _HttpRequestSender      = new TestHttpRequestSender("Some Content");
-            var _SearchResultsParser    = new TestGoogleResultsPageParser(Enumerable.Empty<SearchEngineResult>());
-            var _SearchUrlProvider      = new TestGoogleSearchUrlProvider(new Uri("https://www.google.com"));
-            var _Analyser               = new GoogleResultsPageAnalyser(_HttpRequestSender, _SearchResultsParser, _SearchUrlProvider);
+            var _Analyser = GoogleResultsPageAnalyserFactory.Create();
 
             var _Keywords = new string('1', GoogleResultsPageAnalyser.GOOGLE_SEARCH_QUERY_LENGTH_LIMIT + 1);
 
@@ -65,11 +58,7 @@ namespace SeoAnalysis.Infrastructure.Tests.Unit.SearchEngines
                 new SearchEngineResult { Position = RESULT_POSITION_1,  ResultLink = DOMAIN_TO_MATCH },
                 new SearchEngineResult { Position = 3,                  ResultLink = "test@3.com" },
             };
-
-            var _HttpRequestSender      = new TestHttpRequestSender("Some Content");
-            var _SearchResultsParser    = new TestGoogleResultsPageParser(_SearchResults);
-            var _SearchUrlProvider      = new TestGoogleSearchUrlProvider(new Uri("https://www.google.com"));
-            var _Analyser               = new GoogleResultsPageAnalyser(_HttpRequestSender, _SearchResultsParser, _SearchUrlProvider);
+            var _Analyser = GoogleResultsPageAnalyserFactory.Create(_SearchResults);
 
             // Act
             var _Results = await _Analyser.GetSearchEngineResultsPagePositions("random keywords", DOMAIN_TO_MATCH);
@@ -80,6 +69,25 @@ namespace SeoAnalysis.Infrastructure.Tests.Unit.SearchEngines
 
 
         // Supporting Functionality ------------------------------------------------------
+
+        private static class GoogleResultsPageAnalyserFactory
+        {
+
+            #region " - - - - - - Methods - - - - - - "
+
+            public static GoogleResultsPageAnalyser Create(IEnumerable<SearchEngineResult> results = null)
+            {
+                var _Results                = results ?? Enumerable.Empty<SearchEngineResult>();
+                var _HttpRequestSender      = new TestHttpRequestSender("Some Content");
+                var _SearchResultsParser    = new TestGoogleResultsPageParser(_Results);
+                var _SearchUrlProvider      = new TestGoogleSearchUrlProvider(new Uri("https://www.google.com"));
+
+                return new GoogleResultsPageAnalyser(_HttpRequestSender, _SearchResultsParser, _SearchUrlProvider);
+            } //Create
+
+            #endregion //Methods
+
+        } //GoogleResultsPageAnalyserFactory
 
         private class TestHttpRequestSender : IHttpRequestSender
         {
