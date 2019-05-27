@@ -3,6 +3,8 @@ using SeoAnalysis.Core.SearchEngines;
 using SeoAnalysis.Infrastructure.SearchEngines;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,6 +14,44 @@ namespace SeoAnalysis.Infrastructure.Tests.Unit.SearchEngines
     {
 
         #region " - - - - - - GetSearchEngineResultsPagePositions Tests - - - - - - "
+
+        [Fact]
+        public async Task GetSearchEngineResultsPagePositions_KeywordsArgumentOverWordLimit_ThrowsValidationException()
+        {
+            // Arrange
+            var _HttpRequestSender      = new TestHttpRequestSender("Some Content");
+            var _SearchResultsParser    = new TestGoogleResultsPageParser(Enumerable.Empty<SearchEngineResult>());
+            var _SearchUrlProvider      = new TestGoogleSearchUrlProvider(new Uri("https://www.google.com"));
+            var _Analyser               = new GoogleResultsPageAnalyser(_HttpRequestSender, _SearchResultsParser, _SearchUrlProvider);
+
+            var _Keywords = string.Join(' ', Enumerable.Range(0, GoogleResultsPageAnalyser.GOOGLE_SEARCH_KEYWORDS_LIMIT + 1));
+
+            // Act
+            var _Exception = await Record.ExceptionAsync(() => _Analyser.GetSearchEngineResultsPagePositions(_Keywords, "domaintomatch.com"));
+
+            // Assert
+            Assert.NotNull(_Exception);
+            Assert.IsType<ValidationException>(_Exception);
+        } //GetSearchEngineResultsPagePositions_KeywordsArgumentOverWordLimit_ThrowsValidationException
+
+        [Fact]
+        public async Task GetSearchEngineResultsPagePositions_KeywordsArgumentOverCharacterLimit_ThrowsValidationException()
+        {
+            // Arrange
+            var _HttpRequestSender      = new TestHttpRequestSender("Some Content");
+            var _SearchResultsParser    = new TestGoogleResultsPageParser(Enumerable.Empty<SearchEngineResult>());
+            var _SearchUrlProvider      = new TestGoogleSearchUrlProvider(new Uri("https://www.google.com"));
+            var _Analyser               = new GoogleResultsPageAnalyser(_HttpRequestSender, _SearchResultsParser, _SearchUrlProvider);
+
+            var _Keywords = new string('1', GoogleResultsPageAnalyser.GOOGLE_SEARCH_QUERY_LENGTH_LIMIT + 1);
+
+            // Act
+            var _Exception = await Record.ExceptionAsync(() => _Analyser.GetSearchEngineResultsPagePositions(_Keywords, "domaintomatch.com"));
+
+            // Assert
+            Assert.NotNull(_Exception);
+            Assert.IsType<ValidationException>(_Exception);
+        } //GetSearchEngineResultsPagePositions_KeywordsArgumentOverCharacterLimit_ThrowsValidationException
 
         [Fact]
         public async Task GetSearchEngineResultsPagePositions_ValidArguments_Success()

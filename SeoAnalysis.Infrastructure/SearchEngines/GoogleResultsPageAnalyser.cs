@@ -2,7 +2,9 @@
 using SeoAnalysis.Core.SearchEngines;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SeoAnalysis.Infrastructure.SearchEngines
@@ -12,6 +14,8 @@ namespace SeoAnalysis.Infrastructure.SearchEngines
 
         #region " - - - - - - Fields - - - - - - "
 
+        public const int GOOGLE_SEARCH_KEYWORDS_LIMIT = 32;
+        public const int GOOGLE_SEARCH_QUERY_LENGTH_LIMIT = 2048;
         private const int NUM_SEARCH_RESULTS = 100;
 
         private readonly IHttpRequestSender m_HttpRequestSender;
@@ -49,6 +53,8 @@ namespace SeoAnalysis.Infrastructure.SearchEngines
             if (string.IsNullOrWhiteSpace(keywords))    throw new ArgumentException("At least one keyword must be specified.", nameof(keywords));
             if (string.IsNullOrWhiteSpace(domain))      throw new ArgumentException("The domain must be specified.", nameof(domain));
 
+            ValidateKeywords(keywords);
+
             // Create the Search URL.
             var _SearchUrl = this.m_SearchUrlProvider.CreateSearchUrl(keywords, NUM_SEARCH_RESULTS);
 
@@ -63,6 +69,19 @@ namespace SeoAnalysis.Infrastructure.SearchEngines
         } //GetSearchEngineResultsPagePositions
 
         #endregion //ISearchEngineResultsPageAnalyser Implementation
+
+        #region " - - - - - - Methods - - - - - - "
+
+        private static void ValidateKeywords(string keywords)
+        {
+            if (keywords.Length > GOOGLE_SEARCH_QUERY_LENGTH_LIMIT)
+                throw new ValidationException($"The Keyword length must not exceed {GOOGLE_SEARCH_QUERY_LENGTH_LIMIT} characters.");
+
+            if (Regex.Split(keywords, @"\s+|\t+").Count() > GOOGLE_SEARCH_KEYWORDS_LIMIT)
+                throw new ValidationException($"There must be no more than {GOOGLE_SEARCH_KEYWORDS_LIMIT} keywords.");
+        } //ValidateKeywords
+
+        #endregion //Methods
 
     } //GoogleResultsPageAnalyser
 }
