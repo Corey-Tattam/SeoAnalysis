@@ -155,7 +155,7 @@ export class SeoReportSearch extends Component {
 
         return (
             <div>
-                <h3><b>Results:</b> {results}</h3>
+                <h4><b>Result Positions:</b> {results}</h4>
             </div>
         );
     }; //renderResults
@@ -172,7 +172,7 @@ export class SeoReportSearch extends Component {
                         </InputGroup.Prepend>
                         <Form.Control
                             type="text"
-                            placeholder="online title search"
+                            placeholder="Enter your search terms here ..."
                             onChange={this.handleKeywordsInputChange}
                             aria-label="Search Keywords"
                             aria-describedby="keywordsInput"
@@ -186,7 +186,7 @@ export class SeoReportSearch extends Component {
                         </InputGroup.Prepend>
                         <Form.Control
                             type="text"
-                            placeholder="www.infotrack.com.au"
+                            placeholder="Your Domain (e.g. www.infotrack.com.au)"
                             onChange={this.handleUrlInputChange}
                             aria-label="Domain"
                             aria-describedby="urlInput"
@@ -213,7 +213,7 @@ export class SeoReportSearch extends Component {
                 {errorAlert}
                 <Card className="text-center">
                     <Card.Header>
-                        <h3><em>Google Search Results Rankings</em></h3>
+                        <h3><em>Google Search - Result Positions</em></h3>
                     </Card.Header>
                     <Card.Body>
                         {searchFields}
